@@ -1,8 +1,8 @@
 # Utilities 
 
-PHP classes and helpers that might be helpful when working with data, variablenames, 
+PHP classes and helpers that might be helpful when working with data files, variable name lists, etc. 
  
- * `Data\Helper` proviedes some static helper functions
+ * `Data\Helper` provides some static helper functions
 
  
 ## Usage
