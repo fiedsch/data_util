@@ -1,0 +1,28 @@
+{
+  "name": "Fiedsch/data_util",
+  "description": "utitities ",
+  "keywords": [
+    "data",
+    "variable names",
+    "list",
+    "helpers"
+  ],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andreas Fieger",
+      "email": "fiedsch@ja-eh.at"
+    }
+    ],
+  "support": {
+      "issues": "https://github.com/fiedsch/data_util/issues",
+      "source": "https://github.com/fiedsch/data_util"
+  },
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {"": "src/"}
+  }
+}
