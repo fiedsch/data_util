@@ -12,7 +12,7 @@ namespace Fiedsch\Data;
 class Helper {
 
     /**
-     * Split two Strings and create a string containing the common parts plus the
+     * Split two strings and create a string containing the common parts plus the
      * destinct numerical indices that can be used to create a list of strings that
      * are from, to, and everything in between.
      *
@@ -112,7 +112,7 @@ class Helper {
      * @param array $parts
      * @return array
      */
-    public static function expandArray($parts)
+    protected static function expandArray($parts)
     {
         if (!is_array($parts)) {
             throw new \RuntimeException("expected an array");
