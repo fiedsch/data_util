@@ -14,9 +14,20 @@ class HelperTest extends PHPUnit_Framework_TestCase
      *
      * @@expectedException \RuntimeException
      */
-    public function testGetExpressionWithNoMatch()
+    public function testGetExpressionWithNoMatchWrongCommonParts()
     {
         Helper::getExpression('a_1', 'z_1');
+    }
+
+    /**
+     * If the parameters do not "match"---meaning that it is impossible to create
+     * an expression from them---an exception has to be thrown.
+     *
+     * @@expectedException \RuntimeException
+     */
+    public function testGetExpressionWithNoMatchCasDifferent()
+    {
+    Helper::getExpression("a1", "A1");
     }
 
     /**

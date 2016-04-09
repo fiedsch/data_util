@@ -37,8 +37,8 @@ class Helper {
         // Split inputs in parts containing digits and "not digits" (everything else).
         // While doing this map input to lower so we don't have to care about case.
 
-        $from_split = preg_split('/(\d+)/', strtolower($from), null, PREG_SPLIT_DELIM_CAPTURE);
-        $to_split = preg_split('/(\d+)/', strtolower($to), null, PREG_SPLIT_DELIM_CAPTURE);
+        $from_split = preg_split('/(\d+)/', $from, null, PREG_SPLIT_DELIM_CAPTURE);
+        $to_split = preg_split('/(\d+)/', $to, null, PREG_SPLIT_DELIM_CAPTURE);
 
         // Check if the "not digits" parts match. If not, throw an exception
         // as we will not be able to complete the task.
