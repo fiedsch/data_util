@@ -188,4 +188,27 @@ class Helper {
         return $value;
     }
 
+    /**
+     * Get the zero based index corresponding to the spreadsheet column (A, B, ..., Z, AA, AB, ...).
+     *
+     * (originally defined in https://github.com/fiedsch/datamanagement/ Fiedsch/Data/File/Helper.php
+     * but it seems to fit here better).
+     *
+     * @param string $name Name of the column, case insensitive.
+     *
+     * @return int|number zero based index that corresponds to the `$name`
+     */
+    public static function columnIndex($name)
+    {
+        // name consists of a single letter
+        if (!preg_match("/^[A-Z]+$/i", $name)) {
+            throw new \RuntimeException("invalid column name '$name'");
+        }
+        // solve longer names recursively
+        if (preg_match("/^([A-Z])([A-Z]+)$/i", $name, $matches)) {
+            return pow(26, strlen($matches[2])) * (self::ColumnIndex($matches[1]) + 1) + self::ColumnIndex($matches[2]);
+        }
+        return ord(strtoupper($name)) - 64 - 1;
+    }
+
 }

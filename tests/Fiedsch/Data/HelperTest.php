@@ -87,4 +87,19 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     *
+     */
+    public function testColumnIndex()
+    {
+        $this->assertEquals(0,  Helper::columnIndex('A'));
+        $this->assertEquals(1,  Helper::columnIndex('B'));
+        $this->assertEquals(25, Helper::columnIndex('Z'));
+        $this->assertEquals(26, Helper::columnIndex('AA'));
+        $this->assertEquals(27, Helper::columnIndex('AB'));
+        $this->assertEquals(51, Helper::columnIndex('AZ'));
+        $this->assertEquals(52, Helper::columnIndex('BA'));
+    }
+
+
 }
