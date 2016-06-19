@@ -37,7 +37,7 @@ class Listmanager
      * Listmanager constructor.
      *
      * @param array $data
-     * @param int $use_ase
+     * @param int $use_case
      */
     public function __construct(array $data, $use_case = self::CASE_ASIS)
     {
@@ -71,10 +71,10 @@ class Listmanager
     /**
      * Union. All entries that are contained in $this->data or $other.
      *
-     * @param array $other B in the description above
+     * @param array $other
      * @return array
      */
-    public function or (array $other)
+    public function union(array $other)
     {
         return self::reindex(array_unique(array_merge($this->data, self::fitCase($other, $this->use_case))));
     }
@@ -106,6 +106,7 @@ class Listmanager
      * from 0, 1, ...
      *
      * @param array $list
+     * @return array
      */
     public static function reindex(array $list)
     {
@@ -114,7 +115,8 @@ class Listmanager
 
     /**
      * @param array $data
-     * @param int $use_ase
+     * @param int $use_case
+     * @return array
      */
     public static function fitCase(array $data, $use_case = self::CASE_ASIS)
 {
@@ -126,30 +128,28 @@ class Listmanager
     }
 }
 
-/**
- * Return the list where all entries are transformed to lower case.
- * @param array $list
- * @return array
- */
-public
-static function toLowerCase(array $list)
-{
-    return array_map(function ($element) {
-        return mb_strtolower($element);
-    }, $list);
-}
+    /**
+    * Return the list where all entries are transformed to lower case.
+    * @param array $list
+    * @return array
+    */
+    public static function toLowerCase(array $list)
+    {
+        return array_map(function ($element) {
+            return mb_strtolower($element);
+        }, $list);
+    }
 
-/**
- * Return the list where all entries are transformed to lower case.
- * @param array $list
- * @return array
- */
-public
-static function toUpperCase(array $list)
-{
-    return array_map(function ($element) {
-        return mb_strtoupper($element);
-    }, $list);
-}
+    /**
+     * Return the list where all entries are transformed to lower case.
+     * @param array $list
+     * @return array
+     */
+    public static function toUpperCase(array $list)
+    {
+        return array_map(function ($element) {
+            return mb_strtoupper($element);
+        }, $list);
+    }
 
 }

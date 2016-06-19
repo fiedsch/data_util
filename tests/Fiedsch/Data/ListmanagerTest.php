@@ -3,13 +3,13 @@
 use Fiedsch\Data\Listmanager;
 
 /**
- * Class LismanagerTest
+ * Class ListmanagerTest
  */
 class ListmamanagerTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @@expectedException \RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testException()
     {
@@ -35,13 +35,13 @@ class ListmamanagerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($manager->intersect($listC), []);
     }
 
-    public function testOr()
+    public function testUnion()
     {
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
         $manager = new Listmanager($listA);
-        $this->assertEquals($manager->or($listB), ['a','b','c','d','e']);
-        $this->assertEquals($manager->or($listA), $listA);
+        $this->assertEquals($manager->union($listB), ['a','b','c','d','e']);
+        $this->assertEquals($manager->union($listA), $listA);
     }
 
     public function testUnique()

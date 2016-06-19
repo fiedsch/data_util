@@ -84,7 +84,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
         //print_r(Helper::expandExpression("a_{001,4}"));
 
         //print_r(Helper::expandExpression('image{00001,00099}.jpg'));
-
+        
     }
 
     /**
