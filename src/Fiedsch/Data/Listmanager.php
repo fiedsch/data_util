@@ -42,7 +42,23 @@ class Listmanager
     public function __construct(array $data, $use_case = self::CASE_ASIS)
     {
         $this->use_case = $use_case;
-        $this->data = self::fitCase($data, $use_case);
+        $this->setData($data);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData(array $data)
+    {
+        $this->data = self::fitCase($data, $this->use_case);
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -119,14 +135,14 @@ class Listmanager
      * @return array
      */
     public static function fitCase(array $data, $use_case = self::CASE_ASIS)
-{
-    switch ($use_case) {
-        case self::CASE_ASIS: return $data; break;
-        case self::CASE_LOWER: return self::toLowerCase($data); break;
-        case self::CASE_UPPER: return self::toUpperCase($data); break;
-        default: throw new \RuntimeException("invalid value for use_case: '$use_case'");
+    {
+        switch ($use_case) {
+            case self::CASE_ASIS: return $data; break;
+            case self::CASE_LOWER: return self::toLowerCase($data); break;
+            case self::CASE_UPPER: return self::toUpperCase($data); break;
+            default: throw new \LogicException("invalid value for use_case: '$use_case'");
+        }
     }
-}
 
     /**
     * Return the list where all entries are transformed to lower case.
@@ -135,9 +151,7 @@ class Listmanager
     */
     public static function toLowerCase(array $list)
     {
-        return array_map(function ($element) {
-            return mb_strtolower($element);
-        }, $list);
+        return array_map(function ($element) { return mb_strtolower($element); }, $list);
     }
 
     /**
@@ -147,9 +161,7 @@ class Listmanager
      */
     public static function toUpperCase(array $list)
     {
-        return array_map(function ($element) {
-            return mb_strtoupper($element);
-        }, $list);
+        return array_map(function ($element) { return mb_strtoupper($element); }, $list);
     }
 
 }

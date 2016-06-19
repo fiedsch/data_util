@@ -16,6 +16,15 @@ class ListmamanagerTest extends PHPUnit_Framework_TestCase
         throw new \RuntimeException("fixme Test implementieren");
     }
 
+    public function testGetSetData()
+    {
+        $listA = ['a','b','c'];
+        $listB = ['c','d','e'];
+        $manager = new Listmanager($listA);
+        $this->assertEquals($manager->getData(), $listA);
+        $manager->setData($listB);
+        $this->assertEquals($manager->getData(), $listB);
+    }
     public function testWithout()
     {
         $listA = ['a','b','c'];
