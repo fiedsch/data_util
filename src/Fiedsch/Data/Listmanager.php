@@ -92,7 +92,7 @@ class Listmanager
      */
     public function union(array $other)
     {
-        return self::reindex(array_unique(array_merge($this->data, self::fitCase($other, $this->use_case))));
+        return self::reindex(array_merge($this->data, self::fitCase($other, $this->use_case)));
     }
 
     /**

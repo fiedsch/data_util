@@ -49,8 +49,8 @@ class ListmamanagerTest extends PHPUnit_Framework_TestCase
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
         $manager = new Listmanager($listA);
-        $this->assertEquals($manager->union($listB), ['a','b','c','d','e']);
-        $this->assertEquals($manager->union($listA), $listA);
+        $this->assertEquals($manager->union($listB), ['a','b','c','c','d','e']);
+        $this->assertEquals($manager->union($listA), array_merge($listA,$listA));
     }
 
     public function testUnique()
