@@ -12,8 +12,10 @@ PHP classes and helpers that might be helpful when working with data files, vari
 require '/path/to/vendor/autoload.php';
 
 use Fiedsch\Data\Helper;
+use Fiedsch\Data\Listmanager;
 
 // use Helper::expandExpression() et al.
+// use Listmanager to perform operations on lists (arrays) 
 ```
 
 
@@ -41,4 +43,25 @@ print "someFunction(" . join(',', Helper::expandExpression('a{001,101}')) . ");"
 ```php
 Helper::expandExpression('image{00001,00099}.jpg');
 // array('image00001.jpg', ..., 'image00099.jpg') 
+```
+### Comparing Lists
+
+Notice: result are a lists, not sets (see e.g. union()!)
+
+```php
+$listA = ['a','b','c'];
+$listB = ['c','d','e'];
+$manager = new Listmanager($listA);
+$result = $manager->without($listB);   // ['a', 'b']
+$result = $manager->intersect($listB); // ['c']
+$result = $manager->union($listB);     // ['a','b','c','c','d','e']
+
+$manager = new Listmanager(['a','b','c','c','b']);
+$result = $manager->unique(); // ['a','b','c']
+
+// find duplicates in a list
+$list = ['a','b','a','a','c'];
+$manager = new Listmanager($list);
+$result = $manager->duplicates(); // ['a','a'] 
+// $list[0] is considered unique, $list[2] and $list[3] are in the result
 ```

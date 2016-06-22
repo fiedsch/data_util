@@ -21,23 +21,32 @@ class Listmanager
      * @var array
      */
     protected $data;
-    
+
+    /**
+     * @const int leave as is when changing character case
+     */
     const CASE_ASIS = 1;
 
+    /**
+     * @const int cahnge to lower case
+     */
     const CASE_LOWER = 2;
 
+    /**
+     * @const int cahnge to upper case
+     */
     const CASE_UPPER = 3;
 
     /**
-     * @var int
+     * @var int which case transformation is to be used
      */
     protected $use_case;
 
     /**
      * Listmanager constructor.
      *
-     * @param array $data
-     * @param int $use_case
+     * @param array $data the list to operate on
+     * @param int $use_case transfrom all entries to the specified case
      */
     public function __construct(array $data, $use_case = self::CASE_ASIS)
     {
@@ -46,6 +55,7 @@ class Listmanager
     }
 
     /**
+     * Set new data.
      * @param array $data
      */
     public function setData(array $data)
@@ -54,6 +64,9 @@ class Listmanager
     }
 
     /**
+     * Return the data. Note the data has been transformed by
+     * <code>Listmanager::fitCase()</code> in the constructor or
+     * in <code>setData()</code>.
      * @return array
      */
     public function getData()
@@ -63,7 +76,6 @@ class Listmanager
 
     /**
      * All entries in $this->data that are not contained in $other.
-     *
      * @param array $other
      * @return array
      */
@@ -75,7 +87,6 @@ class Listmanager
     /**
      * Intersect $this->data with $other. The result only contains
      * the values that are contained in both lists.
-     *
      * @param array $other
      * @return array
      */
@@ -86,7 +97,6 @@ class Listmanager
 
     /**
      * Union. All entries that are contained in $this->data or $other.
-     *
      * @param array $other
      * @return array
      */
@@ -97,7 +107,6 @@ class Listmanager
 
     /**
      * $this->data without duplicates.
-     *
      * @return array
      */
     public function unique()
@@ -109,7 +118,6 @@ class Listmanager
      * Duplicates in $this->data. Note: the first occurrence of
      * an entry is not considered a duplicate and thus not contained
      * in the result. Example [1,2,1,2,2,1] yields [1,2,2,1].
-     *
      * @return array
      */
     public function duplicates()
@@ -120,7 +128,6 @@ class Listmanager
     /**
      * Reorganize $list such that the entries are indexed
      * from 0, 1, ...
-     *
      * @param array $list
      * @return array
      */
@@ -130,6 +137,8 @@ class Listmanager
     }
 
     /**
+     * Return a version of the list where all elements are transformed to
+     * uppercase, lowercase or are left as is.
      * @param array $data
      * @param int $use_case
      * @return array
