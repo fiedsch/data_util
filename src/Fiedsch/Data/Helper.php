@@ -63,7 +63,7 @@ class Helper {
                 }
             } else {
                 if ($from_split[$i] !== $to_split[$i]) {
-                    throw new \RuntimeException("'$from' and '$to' do not match [part error]");
+                    throw new \RuntimeException("'$from' and '$to' do not match [error while comparing '$from_split[$i]' and '$to_split[$i]']");
                 }
                 $result .= $from_split[$i];
             }
