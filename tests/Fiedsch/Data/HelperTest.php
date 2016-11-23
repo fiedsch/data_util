@@ -12,7 +12,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
      *
-     * @@expectedException \RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testGetExpressionWithNoMatchWrongCommonParts()
     {
@@ -23,7 +23,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
      *
-     * @@expectedException \RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testGetExpressionWithNoMatchCasDifferent()
     {
