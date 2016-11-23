@@ -56,4 +56,21 @@ class ArrayRecordCreatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([null,null,null], $this->creator->getRecord());
     }
 
+    public function testColumnNameTypes()
+    {
+        $creator = new ArrayRecordCreator(['col042', 'f5.6', 'normal_name']);
+        $creator->col042 = '42';
+        $creator->normal_name = 'normal';
+
+        // $creator->f5.6 = 'F5.6';
+        // ^^^ will not work as it is invalid PHP code
+        // so we have to use this:
+        $colname = 'f5.6';
+        $creator->$colname = 'F5.6';
+        $this->assertEquals(['42','F5.6','normal'], $creator->getRecord());
+        // or this:
+        $creator->__set('f5.6', 'F5.6');
+        $this->assertEquals(['42','F5.6','normal'], $creator->getRecord());
+    }
+
 }
