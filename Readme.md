@@ -13,6 +13,7 @@ require '/path/to/vendor/autoload.php';
 
 use Fiedsch\Data\Helper;
 use Fiedsch\Data\Listmanager;
+use Fiedsch\Data\ArrayRecordCreator;
 
 // use Helper::expandExpression() et al.
 // use Listmanager to perform operations on lists (arrays) 
