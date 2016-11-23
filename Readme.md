@@ -16,6 +16,7 @@ use Fiedsch\Data\Listmanager;
 
 // use Helper::expandExpression() et al.
 // use Listmanager to perform operations on lists (arrays) 
+// use ArrayRecordCreator to create data records
 ```
 
 
@@ -65,3 +66,28 @@ $manager = new Listmanager($list);
 $result = $manager->duplicates(); // ['a','a'] 
 // $list[0] is considered unique, $list[2] and $list[3] are in the result
 ```
+
+### Creating data records
+
+```php
+$creator = new ArrayRecordCreator(['foo','bar','baz']);
+ // add values in arbitrary order
+ $creator->foo = '1';
+ $creator->baz = '2';
+ $creator->bar = '3';
+ $record = $creator->getRecord(); // [1, 3, 2]
+ 
+ $creator->reset();
+ $creator->foo = 'FOO';
+ $record = $creator->getRecord(); // ['FOO', null, null]
+ ```
+ 
+ Combined usage with `Helper`
+ ```php
+ // create target columns 'col001' to 'col100'
+ $creator = new ArrayRecordCreator(Helper::expandExpression('col{001,100}'));
+ $creator->col042 = 'fourtytwo';
+ // ...
+ ```
+ 
+ 
