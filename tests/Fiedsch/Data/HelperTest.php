@@ -1,11 +1,12 @@
 <?php
 
 use Fiedsch\Data\Helper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class HelperTest
  */
-class HelperTest extends PHPUnit_Framework_TestCase
+class HelperTest extends TestCase
 {
 
     /**
@@ -58,6 +59,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('a_1_{1,999}_x_100', Helper::getExpression("a_1_1_x_100", "a_1_999_x_100"));
         $this->assertEquals('a_1_1', Helper::getExpression("a_1_1", "a_1_1"));
         $this->assertEquals('a_11_x_100', Helper::getExpression("a_11_x_100", "a_11_x_100"));
+        $this->assertEquals('a{01,03}', Helper::getExpression("a01", "a03"));
     }
 
     /**
@@ -73,6 +75,8 @@ class HelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([ 'a1' ], Helper::expandExpression('a1'));
         $this->assertEquals([ 'a1' ], Helper::expandExpression('a{1,1}'));
         $this->assertEquals([ 'a1', 'a2', 'a3' ], Helper::expandExpression('a{1,3}'));
+        $this->assertEquals([ 'a01', 'a02', 'a03' ], Helper::expandExpression('a0{1,3}'));
+        $this->assertEquals([ 'a01', 'a02', 'a03' ], Helper::expandExpression('a{01,03}'));
         $this->assertEquals([ '1b', '2b', '3b' ], Helper::expandExpression('{1,3}b'));
         $this->assertEquals([ 'a1_1', 'a1_2', 'a2_1', 'a2_2', 'a3_1', 'a3_2' ], Helper::expandExpression('a{1,3}_{1,2}'));
         $this->assertEquals([ '1a1_1', '1a1_2', '1a2_1', '1a2_2', '2a1_1', '2a1_2', '2a2_1', '2a2_2' ], Helper::expandExpression('{1,2}a{1,2}_{1,2}'));

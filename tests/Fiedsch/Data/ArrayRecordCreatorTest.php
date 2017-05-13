@@ -1,11 +1,12 @@
 <?php
 
 use Fiedsch\Data\ArrayRecordCreator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ArrayRecordCreatorTest
  */
-class ArrayRecordCreatorTest extends PHPUnit_Framework_TestCase
+class ArrayRecordCreatorTest extends TestCase
 {
 
     protected $creator;

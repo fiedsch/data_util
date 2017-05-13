@@ -1,11 +1,12 @@
 <?php
 
 use Fiedsch\Data\Listmanager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ListmanagerTest
  */
-class ListmamanagerTest extends PHPUnit_Framework_TestCase
+class ListmamanagerTest extends TestCase
 {
 
     /**
