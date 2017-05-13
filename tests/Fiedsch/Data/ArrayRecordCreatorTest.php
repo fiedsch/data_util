@@ -29,7 +29,7 @@ class ArrayRecordCreatorTest extends TestCase
      */
     public function testSetNonscalarValue()
     {
-        // column 'fred' was not present in the constructor's column names array
+        // columns con only contain scalar values
         $this->creator->foo = [1,2,3];
     }
 

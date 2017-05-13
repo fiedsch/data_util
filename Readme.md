@@ -33,7 +33,7 @@ statistical analysis.
 print Helper::getExpression('a001', 'a111'); 
 // 'a{001,111}' 
 
-Helper::expandExpression('a{001,101}'); 
+Helper::expandExpression('a{001,111}'); 
 // array('a001', 'a002', 'a003', ..., 'a099', 'a100', ..., 'a111')
 
 print "someFunction(" . join(',', Helper::expandExpression('a{001,101}')) . ");"; 
