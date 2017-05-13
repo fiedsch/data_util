@@ -59,7 +59,7 @@ class Helper {
                 if ($from_split[$i] === $to_split[$i]) {
                     $result .= $from_split[$i];
                 } else {
-                    $result .= sprintf('{%d,%d}', $from_split[$i], $to_split[$i]);
+                    $result .= sprintf('{%s,%s}', $from_split[$i], $to_split[$i]);
                 }
             } else {
                 if ($from_split[$i] !== $to_split[$i]) {
