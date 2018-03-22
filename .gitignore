@@ -3,3 +3,4 @@ examples/
 run.sh
 ideas.md
 composer.lock
+.idea/
