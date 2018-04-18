@@ -60,6 +60,7 @@ class HelperTest extends TestCase
         $this->assertEquals('a_1_1', Helper::getExpression("a_1_1", "a_1_1"));
         $this->assertEquals('a_11_x_100', Helper::getExpression("a_11_x_100", "a_11_x_100"));
         $this->assertEquals('a{01,03}', Helper::getExpression("a01", "a03"));
+        $this->assertEquals('a{01,011}', Helper::getExpression("a01", "a011"));
     }
 
     /**
@@ -84,6 +85,10 @@ class HelperTest extends TestCase
         $this->assertEquals(['a_001', 'a_002','a_003','a_004' ], Helper::expandExpression("a_{001,004}"));
         // is the fact that 'a_{001,004}' yields the same result as 'a_{001,4}' a bug or a feature?
         $this->assertEquals(['a_001', 'a_002','a_003','a_004' ], Helper::expandExpression("a_{001,4}"));
+        // same here:
+        $this->assertEquals(Helper::expandExpression("a_{001,011}"), Helper::expandExpression("a_{001,11}"));
+        $this->assertEquals(['a_009','a_010','a_011' ], Helper::expandExpression("a_{009,11}"));
+
 
         //print_r(Helper::expandExpression("a_{001,4}"));
 
