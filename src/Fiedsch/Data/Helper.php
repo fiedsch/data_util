@@ -86,6 +86,9 @@ class Helper {
      * you might alternatively use bash and let it expand a{1,2,3}_{1,2} which is sometimes more
      * powerful as it could also expand {x,y,z}_{1,2,3}_{a,b}_{1,2}.
      *
+     * Question:
+     * Is the fact that 'a_{001,004}' yields the same result as 'a_{001,4}' a bug or a feature?
+     *
      * @param string $expression
      * @return array
      */
