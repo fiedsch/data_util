@@ -97,7 +97,7 @@ class ListmamanagerTest extends TestCase
         $listA = ['a','B','A','a','C','@','µ'];
         // Note Μ (below) is the unicode upper case version of μ which looks
         // like the  unicode upper case version of m but (of course) is a
-        // different caracter!
+        // different character!
         $this->assertEquals(Listmanager::toUpperCase($listA), ['A','B','A','A','C','@','Μ']);
     }
 

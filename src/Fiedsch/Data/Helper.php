@@ -176,7 +176,7 @@ class Helper {
      * Prefix a value with zeros so that for example '7' becomes '007'
      *
      * This function is not to be confused with PHPs str_pad() which would
-     * pad the string with zeros. We want to prefix with a given numbers
+     * *pad* the string with zeros. We want to *prefix* with a given numbers
      * of zeros.
      *
      * @param mixed $value
