@@ -110,5 +110,35 @@ class HelperTest extends TestCase
         $this->assertEquals(52, Helper::columnIndex('BA'));
     }
 
+    /**
+     *
+     */
+    public function testColumnName()
+    {
+        $this->assertEquals('A', Helper::columnName(0));
+        $this->assertEquals('B', Helper::columnName(1));
+        $this->assertEquals('Z', Helper::columnName(25));
+        $this->assertEquals('AA', Helper::columnName(26));
+        $this->assertEquals('AB', Helper::columnName(27));
+        $this->assertEquals('BA', Helper::columnName(52));
+    }
+
+    /**
+     * Test f(f^-1(x)) = x
+     */
+    public function testColumnNameOfColumnIndex()
+    {
+        for ($i = 0; $i < 256; $i++) {
+            $this->assertEquals(Helper::columnIndex(Helper::columnName($i)),  $i);
+        }
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testColumnNameThrowsException()
+    {
+        Helper::columnName(-1);
+    }
 
 }

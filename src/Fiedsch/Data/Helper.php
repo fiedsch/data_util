@@ -218,4 +218,36 @@ class Helper {
         return ord(strtoupper($name)) - 64 - 1;
     }
 
+    /**
+     * Map number in [1,26] to letter [a,z]
+     * @param integer $i
+     * @return string
+     * @throws RuntimeException
+     */
+    protected static function toLetter($i)
+    {
+        if ($i<1 || $i>26) {
+            throw new \RuntimeException("Invalid number '$i'. Must be in range [1,26].");
+        }
+        return chr(64+$i);
+    }
+
+    /**
+     * Convert number >=0 to letter(s) (like Excel column names)
+     *
+     * @param integer $i
+     * @return string
+     * @throws RuntimeException
+     */
+    public static function columnName($i)
+    {
+        if ($i==0) { return 'A'; }
+
+        $b = $i % 26;
+        $a = intdiv($i - $b, 26);
+        return sprintf("%s%s",
+            $a==0 ? '' : self::columnName($a-1),
+            $b==0 ? self::toLetter(1) : self::toLetter($b+1));
+    }
+
 }
