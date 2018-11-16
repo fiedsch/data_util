@@ -2,7 +2,7 @@
 
 /**
  * Listmanager: Functions typically needed when working with Lists of data,
- * e.g. a list of email addresses ehere a common task is to find duplicates
+ * e.g. a list of email addresses where a common task is to find duplicates
  * in the list or where you have two lists (a target list and a blacklist)
  * and the task would be "find the entries from the target list that are
  * not blacklisted).
@@ -28,12 +28,12 @@ class Listmanager
     const CASE_ASIS = 1;
 
     /**
-     * @const int cahnge to lower case
+     * @const int change to lower case
      */
     const CASE_LOWER = 2;
 
     /**
-     * @const int cahnge to upper case
+     * @const int change to upper case
      */
     const CASE_UPPER = 3;
 
