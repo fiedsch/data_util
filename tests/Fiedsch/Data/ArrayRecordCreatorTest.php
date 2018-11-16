@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 class ArrayRecordCreatorTest extends TestCase
 {
 
+    /**
+     * @var ArrayRecordCreator
+     */
     protected $creator;
 
     public function setUp() {

@@ -13,7 +13,7 @@ class Helper {
 
     /**
      * Split two strings and create a string containing the common parts plus the
-     * destinct numerical indices that can be used to create a list of strings that
+     * distinct numerical indices that can be used to create a list of strings that
      * are from, to, and everything in between.
      *
      * The format of the result looks like the input to in bashs brace expansion
@@ -29,7 +29,7 @@ class Helper {
      *
      * @param string $from
      * @param string $to
-     * @return array
+     * @return string
      * @throws \RuntimeException
      */
     public static function getExpression($from, $to)
@@ -222,7 +222,7 @@ class Helper {
      * Map number in [1,26] to letter [a,z]
      * @param integer $i
      * @return string
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     protected static function toLetter($i)
     {
@@ -237,7 +237,7 @@ class Helper {
      *
      * @param integer $i
      * @return string
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public static function columnName($i)
     {
