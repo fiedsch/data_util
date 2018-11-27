@@ -34,7 +34,7 @@ class HelperTest extends TestCase
     /**
      * Test various inputs
      */
-    public function testGetExression()
+    public function testGetExpression()
     {
         $this->assertEquals('1', Helper::getExpression("1", "1"));
         $this->assertEquals('{1,2}', Helper::getExpression("1", "2"));
