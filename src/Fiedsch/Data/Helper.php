@@ -205,7 +205,7 @@ class Helper {
      *
      * @return int|number zero based index that corresponds to the `$name`
      */
-    public static function columnIndex($name)
+    public static function columnIndex(string $name): int
     {
         // name consists of a single letter
         if (!preg_match("/^[A-Z]+$/i", $name)) {
@@ -220,11 +220,11 @@ class Helper {
 
     /**
      * Map number in [1,26] to letter [a,z]
-     * @param integer $i
+     * @param int $i
      * @return string
      * @throws \RuntimeException
      */
-    protected static function toLetter($i)
+    protected static function toLetter(int $i): string
     {
         if ($i<1 || $i>26) {
             throw new \RuntimeException("Invalid number '$i'. Must be in range [1,26].");
@@ -235,11 +235,11 @@ class Helper {
     /**
      * Convert number >=0 to letter(s) (like Excel column names)
      *
-     * @param integer $i
+     * @param int $i
      * @return string
      * @throws \RuntimeException
      */
-    public static function columnName($i)
+    public static function columnName(int $i): string
     {
         if ($i==0) { return 'A'; }
 
