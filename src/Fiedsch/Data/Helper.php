@@ -250,4 +250,40 @@ class Helper {
             $b==0 ? self::toLetter(1) : self::toLetter($b+1));
     }
 
+    /**
+     * Prepend entries of a column name array to a column name mapping and rebase the mapping.
+     * The column mapping may contain gaps that will be mapped accordingly.
+     * Example:
+     * prependAndRemap(['one'=>'A', 'two'=>'C'], ['three']) === ['three'=>'A','one'=>'B', 'two'=>'D'].
+     *
+     * @param array $base the base mapping
+     * @param array $add an array of column names
+     *
+     * @return array
+     * @throws \RuntimeException
+     */
+    public static function prependAndRemap(array $base, array $add): array
+    {
+        // test for duplicate keys
+        $duplicates = [];
+        foreach ($add as $k) {
+            if (in_array($k, array_keys($base))) {
+                $duplicates[] = $k;
+            }
+        }
+        if ($duplicates) {
+            throw new \RuntimeException("can not remap because of duplicate array keys: '". json_encode($duplicates)."' found in both mappings");
+        }
+
+        $result = [];
+        $idx = 0;
+        foreach ($add as $k) {
+            $result[$k] = self::columnName($idx++);
+        }
+        foreach ($base as $k => $v) {
+            $result[$k] = self::columnName( self::columnIndex($v) + count($add) );
+        }
+        return $result;
+    }
+
 }

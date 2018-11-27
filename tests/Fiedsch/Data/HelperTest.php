@@ -141,4 +141,36 @@ class HelperTest extends TestCase
         Helper::columnName(-1);
     }
 
+    /**
+     *
+     */
+    public function testPrependAndRemapContinuous()
+    {
+        $base = ['x1' => 'A', 'x2' => 'B', 'x3' => 'C'];
+        $add = ['x4', 'x5'];
+        $this->assertEquals(json_encode(['x4' => 'A', 'x5' => 'B', 'x1' => 'C', 'x2' => 'D', 'x3' => 'E']), json_encode(Helper::prependAndRemap($base, $add)));
+    }
+
+    /**
+     *
+     */
+    public function testPrependAndRemapWithGaps()
+    {
+        $base = ['x1' => 'A', 'x2' => 'C', 'x3' => 'E'];
+        $add = ['x4', 'x5'];
+        $this->assertEquals(json_encode(['x4' => 'A', 'x5' => 'B', 'x1' => 'C', 'x2' => 'E', 'x3' => 'G']), json_encode(Helper::prependAndRemap($base, $add)));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testAppendAndRemapThrowsException()
+    {
+        // has to throw an Exception if keys are not unique
+        $base = ['x1' => 'A', 'x2' => 'B', 'x3' => 'C'];
+        $add = ['x2'];
+        Helper::prependAndRemap($base, $add);
+    }
+
+
 }
