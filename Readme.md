@@ -18,6 +18,7 @@ use Fiedsch\Data\ArrayRecordCreator;
 // use Helper::expandExpression() et al.
 // use Listmanager to perform operations on lists (arrays) 
 // use ArrayRecordCreator to create data records
+// use Helper::columnIndex() and Helper::columnName() for column name to numerical index mappings
 ```
 
 
@@ -81,14 +82,44 @@ $creator = new ArrayRecordCreator(['foo','bar','baz']);
  $creator->reset();
  $creator->foo = 'FOO';
  $record = $creator->getRecord(); // ['FOO', null, null]
- ```
+```
  
  Combined usage with `Helper`
- ```php
+
+```php
  // create target columns 'col001' to 'col100'
  $creator = new ArrayRecordCreator(Helper::expandExpression('col{001,100}'));
  $creator->col042 = 'fourtytwo';
  // ...
- ```
+```
  
+ ### Working with data arrays read from a (CSV) file
  
+ If you are working with data records stored in PHP arrays--e.g. when reading lines from 
+ a CSV file--you might find it useful to access the entries by their "column name" rather
+ than their numerical index. This is especially useful if the data originally "lives" in
+ an Excel Spreadsheet where you have column names "A", "B", ... 
+ 
+ To map  "A", "B", ... to the respective array indices 0, 1, ... you can use
+ 
+```php
+Helper::columnIndex("A"); // 0
+Helper::columnIndex("B"); // 1
+// ...
+Helper::columnIndex("AQ"); // 42
+```
+
+The inverse funtion to `columnIndex()` is `columnName()` which might also be useful when
+dealing with column name to array index mappings.
+
+```php
+Helper::columnName(0); // "A"
+Helper::columnIndex(1); // "B"
+// ...
+Helper::columnIndex(42); // "AQ"
+```
+
+Lastly, if you have a mapping and create a new data file by prepending some data columns,
+`prependAndRemap()` can help to create the mapping for the new file (that might serve as 
+input for a next step of your data management process and hence also needs a mapping).
+  
