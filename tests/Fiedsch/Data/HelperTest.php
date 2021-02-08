@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Fiedsch\Data\Helper;
 use PHPUnit\Framework\TestCase;
 
@@ -12,23 +14,21 @@ class HelperTest extends TestCase
     /**
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
-     *
-     * @expectedException \RuntimeException
      */
     public function testGetExpressionWithNoMatchWrongCommonParts()
     {
+        $this->expectException(\RuntimeException::class);
         Helper::getExpression('a_1', 'z_1');
     }
 
     /**
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
-     *
-     * @expectedException \RuntimeException
      */
     public function testGetExpressionWithNoMatchCasDifferent()
     {
-    Helper::getExpression("a1", "A1");
+        $this->expectException(\RuntimeException::class);
+        Helper::getExpression("a1", "A1");
     }
 
     /**
@@ -138,6 +138,7 @@ class HelperTest extends TestCase
      */
     public function testColumnNameThrowsException()
     {
+        $this->expectException(\RuntimeException::class);
         Helper::columnName(-1);
     }
 
@@ -162,11 +163,12 @@ class HelperTest extends TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     *
      */
     public function testAppendAndRemapThrowsException()
     {
         // has to throw an Exception if keys are not unique
+        $this->expectException(\RuntimeException::class);
         $base = ['x1' => 'A', 'x2' => 'B', 'x3' => 'C'];
         $add = ['x2'];
         Helper::prependAndRemap($base, $add);

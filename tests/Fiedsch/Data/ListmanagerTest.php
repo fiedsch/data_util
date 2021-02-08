@@ -9,12 +9,11 @@ use PHPUnit\Framework\TestCase;
 class ListmamanagerTest extends TestCase
 {
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testException()
     {
-        throw new \RuntimeException("fixme Test implementieren");
+        $this->markTestIncomplete(
+            'fixme Test implementieren'
+        );
     }
 
     public function testGetSetData()

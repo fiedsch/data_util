@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Fiedsch\Data\ArrayRecordCreator;
 use PHPUnit\Framework\TestCase;
 
@@ -14,25 +16,28 @@ class ArrayRecordCreatorTest extends TestCase
      */
     protected $creator;
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $this->creator = new ArrayRecordCreator(['foo','bar','baz']);
     }
 
     /**
-     * @expectedException \RuntimeException
+     *
      */
     public function testAccessUndefinedColumn()
     {
         // column 'fred' was not present in the constructor's column names array
+        $this->expectException(\RuntimeException::class);
         $this->creator->fred = '1';
     }
 
     /**
-     * @expectedException \RuntimeException
+     *
      */
     public function testSetNonscalarValue()
     {
         // columns con only contain scalar values
+        $this->expectException(\RuntimeException::class);
         $this->creator->foo = [1,2,3];
     }
 
