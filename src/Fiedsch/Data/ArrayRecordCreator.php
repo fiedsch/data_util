@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package    data_util
  * @author     Andreas Fieger <fiedsch@ja-eh.at>
@@ -69,13 +71,28 @@ class ArrayRecordCreator
     }
 
     /**
-     * Return the current
+     * Return the current data record (numerically indexed array)
      * @return array
      */
     public function getRecord()
     {
         return $this->record;
     }
+
+    /**
+     * Return the current data record in an array with the corresponding column names as keys
+     * @return array
+     */
+    public function getMappedRecord(): array
+    {
+        $result = [];
+        foreach ($this->colnames as $i => $name) {
+            $result[$name] = $this->record[$i];
+        }
+
+        return $result;
+    }
+
 
     /**
      * @param string $name column name

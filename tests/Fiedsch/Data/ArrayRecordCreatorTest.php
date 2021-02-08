@@ -47,6 +47,17 @@ class ArrayRecordCreatorTest extends TestCase
         $this->assertEquals([1,3,2], $this->creator->getRecord());
     }
 
+    public function testGetMappedRecord()
+    {
+        $this->creator->foo = 1;
+        $this->assertEquals(['foo' => 1, 'bar' => null, 'baz' => null], $this->creator->getMappedRecord());
+
+        $this->creator->reset();
+
+        $this->creator->baz = 42;
+        $this->assertEquals(['foo' => null, 'bar' => null, 'baz' => 42], $this->creator->getMappedRecord());
+    }
+
     public function testGetColumn()
     {
         $this->creator->foo = 1;
