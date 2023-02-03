@@ -5,7 +5,7 @@
  * e.g. a list of email addresses where a common task is to find duplicates
  * in the list or where you have two lists (a target list and a blacklist)
  * and the task would be "find the entries from the target list that are
- * not blacklisted).
+ * not on an exclude-list").
  *
  * @package    data_util
  * @author     Andreas Fieger <fiedsch@ja-eh.at>
@@ -45,7 +45,7 @@ class Listmanager
      * Listmanager constructor.
      *
      * @param array $data the list to operate on
-     * @param int $use_case transfrom all entries to the specified case
+     * @param int $use_case transform all entries to the specified case
      */
     public function __construct(array $data, int $use_case = self::CASE_ASIS)
     {

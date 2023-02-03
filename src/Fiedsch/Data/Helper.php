@@ -19,7 +19,7 @@ class Helper {
      * distinct numerical indices that can be used to create a list of strings that
      * are from, to, and everything in between.
      *
-     * The format of the result looks like the input to in bashs brace expansion
+     * The format of the result looks like the input to in bash's brace expansion
      * (https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html)
      * but has a different "meaning"!
      *
@@ -38,7 +38,7 @@ class Helper {
     public static function getExpression(string $from, string $to): string
     {
         // Split inputs in parts containing digits and "not digits" (everything else).
-        // While doing this map input to lower so we don't have to care about case.
+        // While doing this map input to lower, so we don't have to care about case.
 
         $from_split = preg_split('/(\d+)/', $from, -1, PREG_SPLIT_DELIM_CAPTURE);
         $to_split = preg_split('/(\d+)/', $to, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -149,7 +149,7 @@ class Helper {
     }
 
     /**
-     * Essentially PHPs range() with numeric parameters but we also handle leading '0's.
+     * Essentially PHPs range() with numeric parameters, but we also handle leading '0's.
      *
      * @param string $start
      * @param string $stop
@@ -195,10 +195,10 @@ class Helper {
     /**
      * Get the zero based index corresponding to the spreadsheet column (A, B, ..., Z, AA, AB, ...).
      *
-     * (originally defined in https://github.com/fiedsch/datamanagement/ Fiedsch/Data/File/Helper.php
+     * (originally defined in https://github.com/fiedsch/datamanagement/ Fiedsch/Data/File/Helper.php,
      * but it seems to fit here better).
      *
-     * @param string $name Name of the column, case insensitive.
+     * @param string $name Name of the column, case-insensitive.
      *
      * @return int zero based index that corresponds to the `$name`
      */
