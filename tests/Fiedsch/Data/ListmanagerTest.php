@@ -8,15 +8,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ListmamanagerTest extends TestCase
 {
-
-    public function testException()
-    {
-        $this->markTestIncomplete(
-            'fixme Test implementieren'
-        );
-    }
-
-    public function testGetSetData()
+    public function testGetSetData(): void
     {
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
@@ -25,7 +17,7 @@ class ListmamanagerTest extends TestCase
         $manager->setData($listB);
         $this->assertEquals($manager->getData(), $listB);
     }
-    public function testWithout()
+    public function testWithout(): void
     {
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
@@ -33,7 +25,7 @@ class ListmamanagerTest extends TestCase
         $this->assertEquals($manager->without($listB), ['a', 'b']);
     }
 
-    public function testIntersect()
+    public function testIntersect(): void
     {
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
@@ -44,7 +36,7 @@ class ListmamanagerTest extends TestCase
         $this->assertEquals($manager->intersect($listC), []);
     }
 
-    public function testUnion()
+    public function testUnion(): void
     {
         $listA = ['a','b','c'];
         $listB = ['c','d','e'];
@@ -53,27 +45,27 @@ class ListmamanagerTest extends TestCase
         $this->assertEquals($manager->union($listA), array_merge($listA,$listA));
     }
 
-    public function testUnique()
+    public function testUnique(): void
     {
         $listA = ['a','b','c','c','b'];
         $manager = new Listmanager($listA);
         $this->assertEquals($manager->unique(), ['a','b','c']);
     }
 
-    public function testDuplicates()
+    public function testDuplicates(): void
     {
         $listA = ['a','b','a','a','c'];
         $manager = new Listmanager($listA);
         $this->assertEquals($manager->duplicates(), ['a','a']);
     }
 
-    public function testReindex()
+    public function testReindex(): void
     {
         $listA = [1=>'a',3=>'b',4=>'a',7=>'a',11=>'c'];
         $this->assertEquals(Listmanager::reindex($listA), ['a','b','a','a','c']);
     }
 
-    public function testFitCase()
+    public function testFitCase(): void
     {
         $listA = ['a','b','A','B'];
         $this->assertEquals(Listmanager::fitCase($listA), ['a','b','A','B']);
@@ -82,7 +74,7 @@ class ListmamanagerTest extends TestCase
         $this->assertEquals(Listmanager::fitCase($listA, Listmanager::CASE_UPPER), ['A','B','A','B']);
     }
 
-    public function testToLowerCase()
+    public function testToLowerCase(): void
     {
         $listA = ['a','B','A','a','C','@','Μ'];
         // Note Μ (above) is the unicode upper case version of μ which looks
@@ -91,7 +83,7 @@ class ListmamanagerTest extends TestCase
         $this->assertEquals(Listmanager::toLowerCase($listA), ['a','b','a','a','c','@','μ']);
     }
 
-    public function testToUpperCase()
+    public function testToUpperCase(): void
     {
         $listA = ['a','B','A','a','C','@','µ'];
         // Note Μ (below) is the unicode upper case version of μ which looks

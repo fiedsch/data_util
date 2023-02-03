@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace Fiedsch\Data;
 
+use RuntimeException;
+
 /**
  * Class ArrayRecordCreator
  * @package Fiedsch\Data
@@ -35,20 +37,11 @@ namespace Fiedsch\Data;
  */
 class ArrayRecordCreator
 {
-    /**
-     * @var array
-     */
-    protected $record;
+    protected array $record;
 
-    /**
-     * @var array
-     */
-    protected $colnames;
+    protected array $colnames;
 
-    /**
-     * @var array
-     */
-    protected $colpositions;
+    protected array $colpositions;
     /**
      * ArrayRecordCreator constructor.
      * @param array $colnames an array of column names that define the
@@ -65,7 +58,7 @@ class ArrayRecordCreator
      * reset the internal data structures. Use to start building
      * a new record.
      */
-    public function reset()
+    public function reset(): void
     {
         $this->record = array_fill(0, count($this->colnames), null);
     }
@@ -74,7 +67,7 @@ class ArrayRecordCreator
      * Return the current data record (numerically indexed array)
      * @return array
      */
-    public function getRecord()
+    public function getRecord():array
     {
         return $this->record;
     }
@@ -98,13 +91,13 @@ class ArrayRecordCreator
      * @param string $name column name
      * @param mixed $value value to be stored in that column
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         if (!array_key_exists($name, $this->colpositions)) {
-            throw new \RuntimeException("column '$name' is not defined");
+            throw new RuntimeException("column '$name' is not defined");
         }
         if (!is_scalar($value)) {
-            throw new \RuntimeException("columns can only contain scalar values");
+            throw new RuntimeException("columns can only contain scalar values");
         }
 
         $this->record[$this->colpositions[$name]] = $value;
@@ -114,10 +107,10 @@ class ArrayRecordCreator
      * @param string $name column name
      * @return mixed $value value which is stored in that column
      */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (!array_key_exists($name, $this->colpositions)) {
-            throw new \RuntimeException("column '$name' is not defined");
+            throw new RuntimeException("column '$name' is not defined");
         }
         return $this->record[$this->colpositions[$name]];
     }

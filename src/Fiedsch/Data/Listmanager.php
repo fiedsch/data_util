@@ -15,12 +15,11 @@
  */
 namespace Fiedsch\Data;
 
+use LogicException;
+
 class Listmanager
 {
-    /**
-     * @var array
-     */
-    protected $data;
+    protected array $data;
 
     /**
      * @const int leave as is when changing character case
@@ -40,7 +39,7 @@ class Listmanager
     /**
      * @var int which case transformation is to be used
      */
-    protected $use_case;
+    protected int $use_case;
 
     /**
      * Listmanager constructor.
@@ -48,7 +47,7 @@ class Listmanager
      * @param array $data the list to operate on
      * @param int $use_case transfrom all entries to the specified case
      */
-    public function __construct(array $data, $use_case = self::CASE_ASIS)
+    public function __construct(array $data, int $use_case = self::CASE_ASIS)
     {
         $this->use_case = $use_case;
         $this->setData($data);
@@ -58,7 +57,7 @@ class Listmanager
      * Set new data.
      * @param array $data
      */
-    public function setData(array $data)
+    public function setData(array $data): void
     {
         $this->data = self::fitCase($data, $this->use_case);
     }
@@ -69,7 +68,7 @@ class Listmanager
      * in <code>setData()</code>.
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -79,7 +78,7 @@ class Listmanager
      * @param array $other
      * @return array
      */
-    public function without(array $other)
+    public function without(array $other): array
     {
         return self::reindex(array_diff($this->data, self::fitCase($other, $this->use_case)));
     }
@@ -90,7 +89,7 @@ class Listmanager
      * @param array $other
      * @return array
      */
-    public function intersect(array $other)
+    public function intersect(array $other): array
     {
         return self::reindex(array_intersect($this->data, self::fitCase($other, $this->use_case)));
     }
@@ -100,7 +99,7 @@ class Listmanager
      * @param array $other
      * @return array
      */
-    public function union(array $other)
+    public function union(array $other): array
     {
         return self::reindex(array_merge($this->data, self::fitCase($other, $this->use_case)));
     }
@@ -109,7 +108,7 @@ class Listmanager
      * $this->data without duplicates.
      * @return array
      */
-    public function unique()
+    public function unique(): array
     {
         return self::reindex(array_unique($this->data));
     }
@@ -120,7 +119,7 @@ class Listmanager
      * in the result. Example [1,2,1,2,2,1] yields [1,2,2,1].
      * @return array
      */
-    public function duplicates()
+    public function duplicates(): array
     {
         return self::reindex(array_diff_key($this->data, array_unique($this->data)));
     }
@@ -131,7 +130,7 @@ class Listmanager
      * @param array $list
      * @return array
      */
-    public static function reindex(array $list)
+    public static function reindex(array $list): array
     {
         return array_values($list);
     }
@@ -143,14 +142,14 @@ class Listmanager
      * @param int $use_case
      * @return array
      */
-    public static function fitCase(array $data, $use_case = self::CASE_ASIS)
+    public static function fitCase(array $data, int $use_case = self::CASE_ASIS): array
     {
-        switch ($use_case) {
-            case self::CASE_ASIS: return $data; break;
-            case self::CASE_LOWER: return self::toLowerCase($data); break;
-            case self::CASE_UPPER: return self::toUpperCase($data); break;
-            default: throw new \LogicException("invalid value for use_case: '$use_case'");
-        }
+        return match ($use_case) {
+            self::CASE_ASIS => $data,
+            self::CASE_LOWER => self::toLowerCase($data),
+            self::CASE_UPPER => self::toUpperCase($data),
+            default => throw new LogicException("invalid value for use_case: '$use_case'"),
+        };
     }
 
     /**
@@ -158,7 +157,7 @@ class Listmanager
     * @param array $list
     * @return array
     */
-    public static function toLowerCase(array $list)
+    public static function toLowerCase(array $list): array
     {
         return array_map(function ($element) { return mb_strtolower($element); }, $list);
     }
@@ -168,7 +167,7 @@ class Listmanager
      * @param array $list
      * @return array
      */
-    public static function toUpperCase(array $list)
+    public static function toUpperCase(array $list): array
     {
         return array_map(function ($element) { return mb_strtoupper($element); }, $list);
     }

@@ -15,7 +15,7 @@ class HelperTest extends TestCase
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
      */
-    public function testGetExpressionWithNoMatchWrongCommonParts()
+    public function testGetExpressionWithNoMatchWrongCommonParts(): void
     {
         $this->expectException(\RuntimeException::class);
         Helper::getExpression('a_1', 'z_1');
@@ -25,7 +25,7 @@ class HelperTest extends TestCase
      * If the parameters do not "match"---meaning that it is impossible to create
      * an expression from them---an exception has to be thrown.
      */
-    public function testGetExpressionWithNoMatchCasDifferent()
+    public function testGetExpressionWithNoMatchCasDifferent(): void
     {
         $this->expectException(\RuntimeException::class);
         Helper::getExpression("a1", "A1");
@@ -34,7 +34,7 @@ class HelperTest extends TestCase
     /**
      * Test various inputs
      */
-    public function testGetExpression()
+    public function testGetExpression(): void
     {
         $this->assertEquals('1', Helper::getExpression("1", "1"));
         $this->assertEquals('{1,2}', Helper::getExpression("1", "2"));
@@ -66,7 +66,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testExpandExpression()
+    public function testExpandExpression(): void
     {
 
         $this->assertEquals(24, count(Helper::expandExpression('_anfang{1,3}_mitte_{1,2}_ende_{1,4}')));
@@ -99,7 +99,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testColumnIndex()
+    public function testColumnIndex(): void
     {
         $this->assertEquals(0,  Helper::columnIndex('A'));
         $this->assertEquals(1,  Helper::columnIndex('B'));
@@ -113,7 +113,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testColumnName()
+    public function testColumnName(): void
     {
         $this->assertEquals('A', Helper::columnName(0));
         $this->assertEquals('B', Helper::columnName(1));
@@ -126,7 +126,7 @@ class HelperTest extends TestCase
     /**
      * Test f(f^-1(x)) = x
      */
-    public function testColumnNameOfColumnIndex()
+    public function testColumnNameOfColumnIndex(): void
     {
         for ($i = 0; $i < 256; $i++) {
             $this->assertEquals(Helper::columnIndex(Helper::columnName($i)),  $i);
@@ -136,7 +136,7 @@ class HelperTest extends TestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testColumnNameThrowsException()
+    public function testColumnNameThrowsException(): void
     {
         $this->expectException(\RuntimeException::class);
         Helper::columnName(-1);
@@ -145,7 +145,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testPrependAndRemapContinuous()
+    public function testPrependAndRemapContinuous(): void
     {
         $base = ['x1' => 'A', 'x2' => 'B', 'x3' => 'C'];
         $add = ['x4', 'x5'];
@@ -155,7 +155,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testPrependAndRemapWithGaps()
+    public function testPrependAndRemapWithGaps(): void
     {
         $base = ['x1' => 'A', 'x2' => 'C', 'x3' => 'E'];
         $add = ['x4', 'x5'];
@@ -165,7 +165,7 @@ class HelperTest extends TestCase
     /**
      *
      */
-    public function testAppendAndRemapThrowsException()
+    public function testAppendAndRemapThrowsException(): void
     {
         // has to throw an Exception if keys are not unique
         $this->expectException(\RuntimeException::class);

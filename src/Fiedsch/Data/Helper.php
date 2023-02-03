@@ -9,6 +9,9 @@
  */
 namespace Fiedsch\Data;
 
+use RuntimeException;
+use function count;
+
 class Helper {
 
     /**
@@ -30,22 +33,22 @@ class Helper {
      * @param string $from
      * @param string $to
      * @return string
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
-    public static function getExpression($from, $to)
+    public static function getExpression(string $from, string $to): string
     {
         // Split inputs in parts containing digits and "not digits" (everything else).
         // While doing this map input to lower so we don't have to care about case.
 
-        $from_split = preg_split('/(\d+)/', $from, null, PREG_SPLIT_DELIM_CAPTURE);
-        $to_split = preg_split('/(\d+)/', $to, null, PREG_SPLIT_DELIM_CAPTURE);
+        $from_split = preg_split('/(\d+)/', $from, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $to_split = preg_split('/(\d+)/', $to, -1, PREG_SPLIT_DELIM_CAPTURE);
 
         // Check if the "not digits" parts match. If not, throw an exception
         // as we will not be able to complete the task.
 
         // (a) minimum requirement: they have to have the same length.
         if (count($from_split) != count($to_split)) {
-            throw new \RuntimeException("'$from' and '$to' do not match [length error]");
+            throw new RuntimeException("'$from' and '$to' do not match [length error]");
         }
         // (b) a bit more into detail: the "not digits" parts have to be equal.
         // Build the result while performing the checks
@@ -56,16 +59,16 @@ class Helper {
             if (ctype_digit($part)) {
                 // Do not compare as this is the distinct parts we are interested in to create the expansion.
                 // If there is nothing to expand just return the value.
-                if ($from_split[$i] === $to_split[$i]) {
-                    $result .= $from_split[$i];
+                if ($part === $to_split[$i]) {
+                    $result .= $part;
                 } else {
-                    $result .= sprintf('{%s,%s}', $from_split[$i], $to_split[$i]);
+                    $result .= sprintf('{%s,%s}', $part, $to_split[$i]);
                 }
             } else {
-                if ($from_split[$i] !== $to_split[$i]) {
-                    throw new \RuntimeException("'$from' and '$to' do not match [error while comparing '$from_split[$i]' and '$to_split[$i]']");
+                if ($part !== $to_split[$i]) {
+                    throw new RuntimeException("'$from' and '$to' do not match [error while comparing '$part' and '$to_split[$i]']");
                 }
-                $result .= $from_split[$i];
+                $result .= $part;
             }
         }
         return $result;
@@ -92,21 +95,21 @@ class Helper {
      * @param string $expression
      * @return array
      */
-    public static function expandExpression($expression)
+    public static function expandExpression(string $expression): array
     {
         if ('' === $expression) {
             return [];
         }
 
-        if (strpos($expression, '{') === false) {
+        if (!str_contains($expression, '{')) {
             return [$expression];
         }
 
-        if (strpos($expression, '}') === false) {
-            throw new \RuntimeException("did not find matching '}'");
+        if (!str_contains($expression, '}')) {
+            throw new RuntimeException("did not find matching '}'");
         }
 
-        $parts = preg_split('/\{(\d+),(\d+)\}/', $expression, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $parts = preg_split('/\{(\d+),(\d+)\}/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
         return self::expandArray($parts);
     }
@@ -115,12 +118,8 @@ class Helper {
      * @param array $parts
      * @return array
      */
-    protected static function expandArray($parts)
+    protected static function expandArray(array $parts): array
     {
-        if (!is_array($parts)) {
-            throw new \RuntimeException("expected an array");
-        }
-
         if (count($parts) == 1) {
             return $parts;
         }
@@ -141,9 +140,7 @@ class Helper {
                 $result = array_merge($result, $temp);
             }
         } else {
-            if (null !== $next) {
-                array_unshift($parts, $next);
-            }
+            array_unshift($parts, $next);
             $temp = array_merge($result, self::expandArray($parts));
             $temp = array_map(function($element) use ($curr) { return $curr.$element; }, $temp);
             $result = array_merge($result, $temp);
@@ -154,14 +151,14 @@ class Helper {
     /**
      * Essentially PHPs range() with numeric parameters but we also handle leading '0's.
      *
-     * @param int $start
-     * @param int $stop
+     * @param string $start
+     * @param string $stop
      * @return array
      */
-    public static function makeSequence($start, $stop)
+    public static function makeSequence(string $start, string $stop): array
     {
         if (!ctype_digit($start) || !ctype_digit($stop)) {
-            throw new \RuntimeException("makeSequence only allows numeric parameters");
+            throw new RuntimeException("makeSequence only allows numeric parameters");
         }
 
         $result = range($start, $stop);
@@ -186,7 +183,7 @@ class Helper {
      * @param int $count
      * @return string
      */
-    public static function prefixWithZeros($value, $count)
+    public static function prefixWithZeros(mixed $value, int $count): string
     {
         $prefix_count = $count - strlen($value) + 1;
         if ($prefix_count > 0) {
@@ -203,13 +200,13 @@ class Helper {
      *
      * @param string $name Name of the column, case insensitive.
      *
-     * @return int|number zero based index that corresponds to the `$name`
+     * @return int zero based index that corresponds to the `$name`
      */
     public static function columnIndex(string $name): int
     {
         // name consists of a single letter
         if (!preg_match("/^[A-Z]+$/i", $name)) {
-            throw new \RuntimeException("invalid column name '$name'");
+            throw new RuntimeException("invalid column name '$name'");
         }
         // solve longer names recursively
         if (preg_match("/^([A-Z])([A-Z]+)$/i", $name, $matches)) {
@@ -222,12 +219,12 @@ class Helper {
      * Map number in [1,26] to letter [a,z]
      * @param int $i
      * @return string
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected static function toLetter(int $i): string
     {
         if ($i<1 || $i>26) {
-            throw new \RuntimeException("Invalid number '$i'. Must be in range [1,26].");
+            throw new RuntimeException("Invalid number '$i'. Must be in range [1,26].");
         }
         return chr(64+$i);
     }
@@ -237,7 +234,7 @@ class Helper {
      *
      * @param int $i
      * @return string
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public static function columnName(int $i): string
     {
@@ -260,7 +257,7 @@ class Helper {
      * @param array $add an array of column names
      *
      * @return array
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public static function prependAndRemap(array $base, array $add): array
     {
@@ -272,7 +269,7 @@ class Helper {
             }
         }
         if ($duplicates) {
-            throw new \RuntimeException("can not remap because of duplicate array keys: '". json_encode($duplicates)."' found in both mappings");
+            throw new RuntimeException("can not remap because of duplicate array keys: '". json_encode($duplicates)."' found in both mappings");
         }
 
         $result = [];

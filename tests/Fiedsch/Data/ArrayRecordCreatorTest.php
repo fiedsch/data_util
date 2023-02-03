@@ -24,7 +24,7 @@ class ArrayRecordCreatorTest extends TestCase
     /**
      *
      */
-    public function testAccessUndefinedColumn()
+    public function testAccessUndefinedColumn(): void
     {
         // column 'fred' was not present in the constructor's column names array
         $this->expectException(\RuntimeException::class);
@@ -34,14 +34,14 @@ class ArrayRecordCreatorTest extends TestCase
     /**
      *
      */
-    public function testSetNonscalarValue()
+    public function testSetNonscalarValue(): void
     {
         // columns con only contain scalar values
         $this->expectException(\RuntimeException::class);
         $this->creator->foo = [1,2,3];
     }
 
-    public function testGetRecord()
+    public function testGetRecord(): void
     {
         $this->assertEquals([null,null,null], $this->creator->getRecord());
         $this->creator->foo = 1;
@@ -52,7 +52,7 @@ class ArrayRecordCreatorTest extends TestCase
         $this->assertEquals([1,3,2], $this->creator->getRecord());
     }
 
-    public function testGetMappedRecord()
+    public function testGetMappedRecord(): void
     {
         $this->creator->foo = 1;
         $this->assertEquals(['foo' => 1, 'bar' => null, 'baz' => null], $this->creator->getMappedRecord());
@@ -63,20 +63,20 @@ class ArrayRecordCreatorTest extends TestCase
         $this->assertEquals(['foo' => null, 'bar' => null, 'baz' => 42], $this->creator->getMappedRecord());
     }
 
-    public function testGetColumn()
+    public function testGetColumn(): void
     {
         $this->creator->foo = 1;
         $this->assertEquals(1, $this->creator->foo);
     }
 
-    public function testReset()
+    public function testReset(): void
     {
         $this->creator->foo = 1;
         $this->creator->reset();
         $this->assertEquals([null,null,null], $this->creator->getRecord());
     }
 
-    public function testColumnNameTypes()
+    public function testColumnNameTypes(): void
     {
         $creator = new ArrayRecordCreator(['col042', 'f5.6', 'normal_name']);
         $creator->col042 = '42';
