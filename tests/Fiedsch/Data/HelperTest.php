@@ -174,5 +174,55 @@ class HelperTest extends TestCase
         Helper::prependAndRemap($base, $add);
     }
 
+    public function testMoveWavePatternDoesNotMatchDefault(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('do not match');
+        $this->assertEquals('06/2023', Helper::moveWave('09/2023', -3));
+    }
+    public function testMoveWavePatternDoesNotMatchSpecification(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('do not match');
+        $this->assertEquals('06-2023', Helper::moveWave('09-2023', -3, '(\d{4})(-)(\d{2})'));
+    }
+    public function testMoveWavePatternTooShort(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid pattern specification');
+        $this->assertEquals('06-2023', Helper::moveWave('09-2023', -3, '(\d{2})'));
+    }
+    public function testStepTooLarge(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Sorry');
+        $this->assertEquals('10-2025', Helper::moveWave('10-2023', +24));
+    }
 
+    public function testMoveWave(): void
+    {
+        // test with wave == month (i.e. the default $wavesPerYear = 12)
+        $this->assertEquals('06-2023', Helper::moveWave('09-2023', -3));
+        $this->assertEquals('2023-06', Helper::moveWave('2023-09', -3, '(\d{4})(-)(\d{2})', Helper::ORDER_WAVE_LAST));
+
+        $this->assertEquals('2023/06', Helper::moveWave('2023/09', -3, '(\d{4})(\/)(\d{2})', Helper::ORDER_WAVE_LAST));
+
+        $this->assertEquals('12-2022', Helper::moveWave('01-2023', -1));
+        $this->assertEquals('01-2024', Helper::moveWave('12-2023', +1));
+
+        $this->assertEquals('01-2022', Helper::moveWave('01-2023', -12));
+        $this->assertEquals('12-2024', Helper::moveWave('12-2023', +12));
+
+        // Should work for wave == week also (i.e. $wavesPerYear = 52)
+        $this->assertEquals('39-2023', Helper::moveWave('09-2023', +30, '(\d{2})(-)(\d{4})', Helper::ORDER_WAVE_FIRST, 52));
+        $this->assertEquals('02-2024', Helper::moveWave('50-2023', +4, '(\d{2})(-)(\d{4})', Helper::ORDER_WAVE_FIRST, 52));
+
+        $this->assertEquals('49-2022', Helper::moveWave('09-2023', -12, '(\d{2})(-)(\d{4})', Helper::ORDER_WAVE_FIRST, 52));
+        $this->assertEquals('52-2022', Helper::moveWave('01-2023', -1, '(\d{2})(-)(\d{4})', Helper::ORDER_WAVE_FIRST, 52));
+        $this->assertEquals('52-2022', Helper::moveWave('01-2023', -1, '(\d{2})(-)(\d{4})', Helper::ORDER_WAVE_FIRST, 52));
+
+        // Two digit years might fail (e.g. in '12/99' moved forward one would result in year 100) but simple cases should work nevertheless
+        $this->assertEquals('02-24', Helper::moveWave('12-23', +2, '(\d{2})(-)(\d{2})', Helper::ORDER_WAVE_FIRST, 12));
+        $this->assertEquals('01-100', Helper::moveWave('12-99', +1, '(\d{2})(-)(\d{2})', Helper::ORDER_WAVE_FIRST, 12)); // => don't use two digit years!
+    }
 }

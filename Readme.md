@@ -130,6 +130,28 @@ Assume, you have an array that maps (some) variable names to column names:
 Now, if you prepend new columns in a data management step you need to adapt
 the mapping for the next step to match the new data:
 ```php
-prependAndRemap(['one'=>'A', 'two'=>'C', 'three'=>'X'], ['four', 'five'])
+Helper::prependAndRemap(['one'=>'A', 'two'=>'C', 'three'=>'X'], ['four', 'five'])
 // ['four'=>'A', 'five'=>'B', 'one'=>'C', 'two'=>'E', 'three'=>'Z']
+```
+
+
+### Working with wave specifications
+
+Experimental: might change in future versions!
+
+Consider a survey that is conducted 12 times a year. We call "these waves" something like `'01-2023'`, `'02-2023'`, ..., `'12-2023'`.
+
+When we want to access the name of a wave "tree waves back", we want to move from `'08-2023'` to `'05-2023'` for example, 
+but '02-2023'` to `'11-2022'` should also be computed correctly.
+
+```php
+Helper::moveWave('08-2023', -3); // '05-2023'
+Helper::moveWave('02-2023', -3); // '11-2023'
+Helper::moveWave('10-2023', +3); // '01-2024'
+```
+
+Use a different pattern like so:
+```php
+Helper::moveWave('09/2023', -3, '(\d{2})(\/)(\d{4})', Helper::ORDER_WELLE_FIRST); // '06/2023'
+Helper::moveWave('2023/09', -3, '(\d{4})(\/)(\d{2})', Helper::ORDER_WELLE_LAST);  // '2023/06' 
 ```

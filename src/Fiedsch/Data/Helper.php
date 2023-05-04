@@ -11,8 +11,19 @@ namespace Fiedsch\Data;
 
 use RuntimeException;
 use function count;
+use function abs;
 
 class Helper {
+
+    /*
+     * In surveys that run over a longer period of time, we often have names for waves created from number of the wave
+     * and calendar year like '09-2023' or '2023-09'. In order to get the name for the wave x steps forward or back
+     * (e.g. '09-2023' three waves back would be '06-2023') the utility function Helper::moveWave() can be used.
+     * The following constants are used to specify where the wave part is expected (compare '09-2023' and '2023-09')
+     * when parsing the string.
+     */
+    const ORDER_WAVE_FIRST = 1;
+    const ORDER_WAVE_LAST = 2;
 
     /**
      * Split two strings and create a string containing the common parts plus the
@@ -281,6 +292,80 @@ class Helper {
             $result[$k] = self::columnName( self::columnIndex($v) + count($add) );
         }
         return $result;
+    }
+
+    /**
+     * Consider waves in a study (a wave could e.g. be the month or the week). This function helps to move the specification
+     * of a wave x waves forward or backward.
+     * Example: '09-2023' back three waves would be '06-2023', back 12 waves would be '06-2022' (when we consider 12
+     * waves per year, i.e. months).
+     *
+     * @param string $wave must be formatted so it matches the specifications in $pattern and $order
+     * @param int $step move x waves forward ($step > 0) or backward ($step < 0)
+     * @param string $pattern pattern for the wave and year parts (a regular expression including an optional separator like '-' in '09-2023' or '/' in '2023/09').
+     *                        Use two digit years at your own risk as we did not fully consider that case: what does 64 in '09/64' mean: 1964 or 2064?
+     * @param int $order specifies if the wave part comes first or last ('09-2023' or '2023-09' respectively)
+     * @param int $wavesPerYear the amount of waves per year we want to consider (defaults to 12, i.e. wave == month)
+     */
+    public static function moveWave(string $wave, int $step, string $pattern = '(\d{2})(-)(\d{4})', int $order = self::ORDER_WAVE_FIRST, int $wavesPerYear = 12): string
+    {
+        if (abs($step) > $wavesPerYear) {
+            throw new RuntimeException('Sorry, we currently only handle step values <= '.$wavesPerYear); // TODO we obviously want to fix that below
+        }
+        // Extract the lengths of the wave and year sub patterns from $pattern extrahieren (with the default pattern this would be 2 and 4):
+        if (!preg_match('/{(\d)}.*{(\d)}/', $pattern, $matches)) {
+            throw new RuntimeException("Invalid pattern specification: Expected to find two digits for wave's and year's respective lengths");
+        }
+        if (self::ORDER_WAVE_FIRST === $order) {
+            $pattern_wave_length = (int)$matches[1];
+            /** @noinspection PhpUnusedLocalVariableInspection */
+            $pattern_year_length = (int)$matches[2];
+        } else {
+            /** @noinspection PhpUnusedLocalVariableInspection */
+            $pattern_year_length = (int)$matches[1];
+            $pattern_wave_length = (int)$matches[2];
+        }
+
+        if (!preg_match("/$pattern/", $wave, $matches)) {
+            throw new RuntimeException("Parameters \$wave and \$pattern do not match: Expected $pattern and got $wave");
+        }
+        // Jahr und Welle aus $wave extrahieren
+        if (self::ORDER_WAVE_FIRST === $order) {
+            $extracted_wave = (int)$matches[1];
+            $extracted_separator = $matches[2];
+            $extracted_year = (int)$matches[3];
+        } else {
+            $extracted_year = (int)$matches[1];
+            $extracted_separator = $matches[2];
+            $extracted_wave = (int)$matches[3];
+        }
+
+        // Fix $wave_ and $year when switching to a different year
+        $moved_wave = $extracted_wave + $step;
+        $moved_year = $extracted_year;
+
+        if ($moved_wave < 1) {
+            $moved_year -= 1;
+            $moved_wave = $moved_wave + $wavesPerYear;
+        }
+        if ($moved_wave > $wavesPerYear) {
+            $moved_year += 1;
+            $moved_wave = $moved_wave - $wavesPerYear;
+        }
+
+        if (self::ORDER_WAVE_FIRST === $order) {
+            return sprintf('%s%s%s',
+                str_pad($moved_wave, $pattern_wave_length, '0', STR_PAD_LEFT),
+                $extracted_separator,
+                $moved_year
+            );
+        } else {
+            return sprintf('%s%s%s',
+                $moved_year,
+                $extracted_separator,
+                str_pad($moved_wave, $pattern_wave_length, '0', STR_PAD_LEFT)
+            );
+        }
     }
 
 }
