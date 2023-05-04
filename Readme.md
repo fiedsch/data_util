@@ -152,6 +152,6 @@ Helper::moveWave('10-2023', +3); // '01-2024'
 
 Use a different pattern like so:
 ```php
-Helper::moveWave('09/2023', -3, '(\d{2})(\/)(\d{4})', Helper::ORDER_WELLE_FIRST); // '06/2023'
-Helper::moveWave('2023/09', -3, '(\d{4})(\/)(\d{2})', Helper::ORDER_WELLE_LAST);  // '2023/06' 
+Helper::moveWave('09/2023', -3, '(\d{2})(\/)(\d{4})', Helper::ORDER_WAVE_FIRST); // '06/2023'
+Helper::moveWave('2023/09', -3, '(\d{4})(\/)(\d{2})', Helper::ORDER_WAVE_LAST);  // '2023/06' 
 ```
